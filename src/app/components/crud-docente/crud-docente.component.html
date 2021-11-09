@@ -7,10 +7,10 @@
 
         <div class="row" style="height: 80px">
             <div class="col-md-4">
-                <input  class="form-control" id="id_txt_filtro" name="filtro" placeholder="Ingrese el nombre" type="text" maxlength="30" />
+                <input  [(ngModel)]="filtro" class="form-control" id="id_txt_filtro" name="filtro" placeholder="Ingrese el nombre" type="text" maxlength="30" />
             </div>
             <div class="col-md-2">
-                <button type="button" class="btn btn-primary" id="id_btn_filtrar" style="width: 150px">Filtrar</button>
+                <button (click)="consultaDocente(filtro)"  type="button" class="btn btn-primary" id="id_btn_filtrar" style="width: 150px">Filtrar</button>
             </div>
             <div class="col-md-2">
                 <button  type="button" data-toggle='modal' data-target="#idModalRegistrar" class='btn btn-success' style="width: 150px">Registrar</button>
@@ -35,12 +35,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr >
-                                <td>1</td>
-                                <td>AAA</td>
-                                <td>BB</td>
-                                <td>CC</td>
-                                <td>DDD</td>
+                            <tr *ngFor="let aux of docentes" >
+                                <td>{{aux.idDocente}}</td>
+                                <td>{{aux.nombre}}</td>
+                                <td>{{aux.dni}}</td>
+                                <td>{{aux.estado}}</td>
+                                <td>{{aux.ubigeo?.departamento}} - {{aux.ubigeo?.provincia}} - {{aux.ubigeo?.distrito}} </td>
                                 <td><button type="button" style="width: 90px" class="btn btn-primary btn-sm" data-toggle='modal' data-target="#exampleModalEliminar">Activo</button></td>
                                 <td><button type="button" style="width: 90px" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#idModalActualizar">Editar</button></td>
                                 
