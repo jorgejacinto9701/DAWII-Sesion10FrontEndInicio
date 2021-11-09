@@ -5,12 +5,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { CrudDocenteComponent } from './components/crud-docente/crud-docente.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CrudDocenteComponent
   ],
+
   imports: [
     BrowserModule,
     HttpClientModule,
