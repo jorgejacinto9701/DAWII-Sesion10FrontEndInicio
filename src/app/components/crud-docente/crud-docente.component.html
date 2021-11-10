@@ -39,10 +39,10 @@
                                 <td>{{aux.idDocente}}</td>
                                 <td>{{aux.nombre}}</td>
                                 <td>{{aux.dni}}</td>
-                                <td>{{aux.estado}}</td>
+                                <td>{{getEstado(aux.estado==null?0:aux.estado)}}</td>
                                 <td>{{aux.ubigeo?.departamento}} - {{aux.ubigeo?.provincia}} - {{aux.ubigeo?.distrito}} </td>
-                                <td><button type="button" style="width: 90px" class="btn btn-primary btn-sm" data-toggle='modal' data-target="#exampleModalEliminar">Activo</button></td>
-                                <td><button type="button" style="width: 90px" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#idModalActualizar">Editar</button></td>
+                                <td><button (click)="cambioEstado(2, 3)" type="button" style="width: 90px" class="btn btn-primary btn-sm" data-toggle='modal' data-target="#exampleModalEliminar">Activo</button></td>
+                                <td><button (click)="busca(aux)" type="button" style="width: 90px" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#idModalActualizar">Editar</button></td>
                                 
                             </tr>
                         </tbody>
@@ -68,17 +68,17 @@
                 
                 <div class="modal-body">
                     <form class="content" >
-                        <div class="submit-form">
+                        <div class="submit-form" >
                             
                                 <div  class="row">
                                     <div class="col-lg-10">
                                         <label for="id_reg_nombre">Nombre</label>
-                                        <input type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_reg_nombre" />
+                                        <input [(ngModel)]= "docente.nombre"  type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_reg_nombre" />
                                     </div>
                                     
                                     <div class="col-lg-2">
                                         <label for="id_reg_dni">DNI</label>
-                                        <input type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
+                                        <input [(ngModel)]= "docente.dni" type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
                                     </div>
                                 </div>
 
@@ -86,22 +86,31 @@
                                 <div class="row" style="margin-top: 5%">
                                     <div class="col-lg-4">
                                         <label for="id_reg_departamento">Departamento</label>
-                                        <select id="id_reg_departamento" name="departamento" class="form-control">
+                                        <select  [(ngModel)] = "docente.ubigeo!.departamento" (change)= "cargaProvincia()"  id="id_reg_departamento" name="departamento" class="form-control">
                                             <option value="-1"> [Seleccione] </option>
+                                             <option *ngFor="let aux of departamentos" value="{{ aux }}">
+                                                    {{ aux }}
+                                             </option> 
                                         </select>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label for="id_reg_provincia">Provincia</label>
-                                        <select id="id_reg_provincia" name="provincia" class="form-control" >
+                                        <select [(ngModel)] = "docente.ubigeo!.provincia" (change)= "cargaDistrito()" id="id_reg_provincia" name="provincia" class="form-control" >
                                             <option value="-1"> [Seleccione] </option>
+                                            <option *ngFor="let aux of provincias" value="{{ aux }}">
+                                                {{ aux }}
+                                            </option>   
                                         </select>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label for="id_reg_distrito">Distrito</label>
-                                        <select id="id_reg_distrito" name="distrito" class="form-control">
-                                            <option value="-1"> [Seleccione] </option>
+                                        <select [(ngModel)] = "docente.ubigeo!.idUbigeo" id="id_reg_distrito" name="distrito" class="form-control">
+                                            <option value="0"> [Seleccione] </option>
+                                            <option *ngFor="let aux of distritos"    value="{{ aux.idUbigeo }}">
+                                                {{ aux.distrito }}
+                                            </option> 
                                         </select>
                                     </div>
                                 </div>
@@ -111,7 +120,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn_reg_cerrar" style="width: 100px;">Close</button>
                             <div class="form-group text-center">
                                 <div class="col-lg-12">
-                                    <button id="id_reg_registra"  class="btn btn-success form-control"style="width: 100px;">Registrar</button>
+                                    <button  (click)="registra()"  type="button"    id="id_reg_registra"  class="btn btn-success form-control"style="width: 100px;">Registrar</button>
                                 </div>
                             </div>
                         </div>
@@ -143,12 +152,12 @@
                             <div  class="row">
                                 <div class="col-lg-8">
                                     <label for="id_act_nombre">Nombre</label>
-                                    <input type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_act_nombre" />
+                                    <input  [(ngModel)]= "docente.nombre" type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_act_nombre" />
                                 </div>
     
                                 <div class="col-lg-2">
                                     <label for="id_act_estado">Estado</label>
-                                    <select id="id_act_estado" name="estado" class="form-control">
+                                    <select  [(ngModel)]= "docente.estado" id="id_act_estado" name="estado" class="form-control">
                                         <option value="-1"> [Seleccione] </option>
                                         <option value="1"> Activo </option>
                                         <option value="0"> Inactivo </option>
@@ -157,7 +166,7 @@
 
                                 <div class="col-lg-2">
                                     <label for="id_act_dni">DNI</label>
-                                    <input type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_act_dni"  maxlength="8"/>
+                                    <input [(ngModel)]= "docente.dni" type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_act_dni"  maxlength="8"/>
                                 </div>
                             </div>
     
@@ -165,22 +174,31 @@
                             <div class="row" style="margin-top: 5%">
                                 <div class="col-lg-4">
                                     <label for="id_act_departamento">Departamento</label>
-                                    <select id="id_act_departamento" name="departamento" class="form-control">
+                                    <select [(ngModel)] = "docente.ubigeo!.departamento" (change)= "cargaProvincia()"  id="id_act_departamento" name="departamento" class="form-control">
                                         <option value="-1"> [Seleccione] </option>
+                                        <option *ngFor="let aux of departamentos" value="{{ aux }}">
+                                            {{ aux }}
+                                        </option> 
                                     </select>
                                 </div>
     
                                 <div class="col-lg-4">
                                     <label for="id_act_provincia">Provincia</label>
-                                    <select id="id_act_provincia" name="provincia" class="form-control" >
+                                    <select [(ngModel)] = "docente.ubigeo!.provincia" (change)= "cargaDistrito()"  id="id_act_provincia" name="provincia" class="form-control" >
                                         <option value="-1"> [Seleccione] </option>
+                                        <option *ngFor="let aux of provincias" value="{{ aux }}">
+                                            {{ aux }}
+                                        </option>   
                                     </select>
                                 </div>
     
                                 <div class="col-lg-4">
                                     <label for="id_act_distrito">Distrito</label>
-                                    <select id="id_act_distrito" name="distrito" class="form-control">
+                                    <select [(ngModel)] = "docente.ubigeo!.idUbigeo" id="id_act_distrito" name="distrito" class="form-control">
                                         <option value="-1"> [Seleccione] </option>
+                                        <option *ngFor="let aux of distritos"    value="{{ aux.idUbigeo }}">
+                                            {{ aux.distrito }}
+                                        </option> 
                                     </select>
                                 </div>
                             </div> 
@@ -192,7 +210,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn_act_cerrar">Close</button>
                             <div class="form-group text-center">
                                 <div class="col-lg-12">
-                                    <button id="id_act_actualiza" class="btn btn-success form-control">Actualizar</button>
+                                    <button  (click)="actualiza()" id="id_act_actualiza" class="btn btn-success form-control">Actualizar</button>
                                 </div>
                             </div>
                         </div>
