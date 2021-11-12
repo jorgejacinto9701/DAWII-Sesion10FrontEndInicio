@@ -8,19 +8,27 @@ const baseUrl = 'http://localhost:8090/rest/crudDocente';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class DocenteService {
 
-  constructor(private http: HttpClient) {}
-
-  consultaDocente(filtro:string): Observable<any> {
-    return this.http.get(baseUrl + "/listaDocentePorNombreLike/" + filtro);
-  }
-
-  registra(data:Docente): Observable<any>{
-    return this.http.post(baseUrl+"/registraDocente", data);
-  }
   
-  actualiza(data:Docente): Observable<any>{
-    return this.http.put(baseUrl+"/actualizaDocente", data);
+  constructor(private http:HttpClient) { }
+ 
+  consultaDocente(filtro:string):Observable<Docente[]>{
+    return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/" + filtro);
   }
+
+  registraDocente(aux:Docente):Observable<any>{
+    return this.http.post<any>(baseUrl + "/registraDocente", aux);
+  }
+
+  actualizaDocente(aux:Docente):Observable<any>{
+    return this.http.put<any>(baseUrl + "/actualizaDocente", aux);
+  }
+
+  actualizaEstadoDocente(aux:Docente):Observable<any>{
+    return this.http.put<any>(baseUrl + "/actualizaEstadoDocente", aux);
+  }
+
 }
