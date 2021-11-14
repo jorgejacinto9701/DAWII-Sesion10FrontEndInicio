@@ -58,8 +58,10 @@ export class CrudDocenteComponent implements OnInit {
   ngOnInit(): void {}
 
   consulta(){
-    this.docenteService.consultaDocente(this.filtro).subscribe(
-         respose => this.docentes = respose
+    console.log(" ==> En consulta() ==> filtro = " + this.filtro);
+    
+    this.docenteService.consulta(this.filtro).subscribe(
+        response => this.docentes = response
     );
   }
 
@@ -70,32 +72,34 @@ export class CrudDocenteComponent implements OnInit {
     console.log(" ==> registra ==> idUbigeo ==> " + this.docente.ubigeo?.idUbigeo);
     console.log(this.docente);
 
-    this.docenteService.registraDocente(this.docente).subscribe(
-          response => {
+    this.docente.estado = 1;
+    this.docenteService.registra(this.docente).subscribe(
+        response =>{
               console.log(response.mensaje);
               alert(response.mensaje);
 
-              this.docenteService.consultaDocente(this.filtro).subscribe(
+              this.docenteService.consulta(this.filtro).subscribe(
                 response => this.docentes = response
               );
-
+              
               this.docente = { 
-                  idDocente:0,
-                  nombre:"",
-                  dni:"",
-                  estado:1,
-                  ubigeo:{
-                    idUbigeo: 0,
-                    departamento:"-1",
-                    provincia:"-1",
-                    distrito:"-1",
+                idDocente:0,
+                nombre:"",
+                dni:"",
+                estado:1,
+                ubigeo:{
+                  idUbigeo: 0,
+                  departamento:"-1",
+                  provincia:"-1",
+                  distrito:"-1",
                   }
-              }
-          },
-          error => {
+              }   
+        },
+        error => {
             console.log(error);
-          },
+        },
     );
+    
   }
 
 
@@ -105,16 +109,15 @@ export class CrudDocenteComponent implements OnInit {
     console.log(" ==> busca ==> provincia ==> " + this.docente.ubigeo?.provincia);
     console.log(" ==> busca ==> distrito ==> " + this.docente.ubigeo?.distrito);
     console.log(" ==> busca ==> idUbigeo ==> " + this.docente.ubigeo?.idUbigeo);
-    console.log(this.docente);
     this.docente = aux;
 
-    this.ubigeoService.listaProvincias(this.docente.ubigeo?.departamento).subscribe(
-      response => this.provincias = response      
-    );
-
+      this.ubigeoService.listaProvincias(this.docente.ubigeo?.departamento).subscribe(
+        response =>  this.provincias= response
+      );
+  
     this.ubigeoService.listaDistritos(this.docente.ubigeo?.departamento, this.docente.ubigeo?.provincia).subscribe(
-      response => this.distritos = response      
-    );
+      response =>  this.distritos= response
+     );
 
   }
   
@@ -126,32 +129,33 @@ export class CrudDocenteComponent implements OnInit {
     console.log(" ==> actualiza ==> idUbigeo ==> " + this.docente.ubigeo?.idUbigeo);
     console.log(this.docente);
 
-    this.docenteService.actualizaDocente(this.docente).subscribe(
-          response => {
+    this.docenteService.actualiza(this.docente).subscribe(
+      response =>{
               console.log(response.mensaje);
               alert(response.mensaje);
-              
-              this.docenteService.consultaDocente(this.filtro).subscribe(
+
+              this.docenteService.consulta(this.filtro).subscribe(
                 response => this.docentes = response
               );
-
+              
               this.docente = { 
-                  idDocente:0,
-                  nombre:"",
-                  dni:"",
-                  estado:1,
-                  ubigeo:{
-                    idUbigeo: 0,
-                    departamento:"-1",
-                    provincia:"-1",
-                    distrito:"-1",
+                idDocente:0,
+                nombre:"",
+                dni:"",
+                estado:1,
+                ubigeo:{
+                  idUbigeo: 0,
+                  departamento:"-1",
+                  provincia:"-1",
+                  distrito:"-1",
                   }
-              }
-          },
-          error => {
+              }   
+        },
+        error => {
             console.log(error);
-          },
+        },
     );
+
   }
 
   getEstado(estado:number):string{
@@ -176,46 +180,40 @@ export class CrudDocenteComponent implements OnInit {
     return salida == null? "":salida;
   }
 
-  cambioEstado(idDocente:number, estado:number){
 
-    console.log(" ==> cambioEstado ==>  idDocente ==> " + idDocente);
-    console.log(" ==> cambioEstado ==>  estado ==> " + estado);
 
-    if (estado == 0) 
-      estado = 1;
-    else 
-      estado = 0;
+  actualizaEstado(aux:Docente){
+    console.log(" ==> En actualizaEstado() ");
+    
+    //Cambia el estado
+    this.docente = aux;
+    this.docente.estado = (aux.estado==1)? 0 : 1;
 
-    this.docente.idDocente = idDocente;
-    this.docente.estado = estado;
+    this.docenteService.actualiza(this.docente).subscribe(
+        response =>{
+              console.log(response.mensaje);
 
-    this.docenteService.actualizaEstadoDocente(this.docente).subscribe(
-      response => {
-          console.log(response.mensaje);
-
-          
-          this.docenteService.consultaDocente(this.filtro).subscribe(
-            response => this.docentes = response
-          );
-
-          this.docente = { 
-              idDocente:0,
-              nombre:"",
-              dni:"",
-              estado:1,
-              ubigeo:{
-                idUbigeo: 0,
-                departamento:"-1",
-                provincia:"-1",
-                distrito:"-1",
-              }
-          }
-      },
-      error => {
-        console.log(error);
-      },
-);
-
+              this.docenteService.consulta(this.filtro).subscribe(
+                response => this.docentes = response
+              );
+              
+              this.docente = { 
+                idDocente:0,
+                nombre:"",
+                dni:"",
+                estado:1,
+                ubigeo:{
+                  idUbigeo: 0,
+                  departamento:"-1",
+                  provincia:"-1",
+                  distrito:"-1",
+                  }
+              }   
+        },
+        error => {
+            console.log(error);
+        },
+    );
   }
 
 }

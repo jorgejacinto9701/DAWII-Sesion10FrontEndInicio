@@ -41,7 +41,7 @@
                                 <td>{{aux.dni}}</td>
                                 <td>{{getEstado(aux.estado==null?0:aux.estado)}}</td>
                                 <td>{{aux.ubigeo!.departamento}} - {{aux.ubigeo!.provincia}} - {{aux.ubigeo!.distrito}}</td>
-                                <td><button  (click)="cambioEstado(aux.idDocente==null?0:aux.idDocente, aux.estado==null?0:aux.estado)" type="button" style="width: 90px" class="btn btn-primary btn-sm" data-toggle='modal' data-target="#exampleModalEliminar">{{getTextoBotonEstado(aux.estado==null?0:aux.estado)}}</button></td>
+                                <td><button  (click)="actualizaEstado(aux)" type="button" style="width: 90px" class="btn btn-primary btn-sm" data-toggle='modal' data-target="#exampleModalEliminar">{{getTextoBotonEstado(aux.estado==null?0:aux.estado)}}</button></td>
                                 <td><button (click)="busca(aux)" type="button" style="width: 90px" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#idModalActualizar">Editar</button></td>
                             </tr>
                         </tbody>
