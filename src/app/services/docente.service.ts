@@ -15,24 +15,16 @@ export class DocenteService {
 
   constructor(private http:HttpClient) { }
  
-  consulta(filtro:string):  Observable<Docente[]>{
-    if (filtro.trim() == ""){
-      return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/todos");
-    }else{
-      return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/" + filtro);
-    }
-  } 
-
-  registra(aux:Docente):  Observable<any>{
-    return this.http.post(baseUrl+"/registraDocente",aux );
+  consulta(filtro:string):Observable<Docente[]>{
+      return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/" +filtro );
   }
 
-  actualiza(aux:Docente):  Observable<any>{
-    return this.http.put(baseUrl+"/actualizaDocente",aux );
+  registra(aux:Docente):Observable<any>{
+      return this.http.post<any>(baseUrl+"/registraDocente",aux);
   }
 
-  actualizaEstado(aux:Docente):  Observable<any>{
-    return this.http.put(baseUrl+"/actualizaDocente",aux );
+  actualiza(aux:Docente):Observable<any>{
+      return this.http.put<any>(baseUrl+"/actualizaDocente",aux);
   }
 
 }

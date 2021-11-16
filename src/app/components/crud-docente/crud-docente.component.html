@@ -107,7 +107,7 @@
                                     <div class="col-lg-4">
                                         <label for="id_reg_distrito">Distrito</label>
                                         <select [(ngModel)]="docente.ubigeo!.idUbigeo" id="id_reg_distrito" name="distrito" class="form-control">
-                                            <option value="-1"> [Seleccione] </option>
+                                            <option value="0"> [Seleccione] </option>
                                             <option *ngFor="let aux of  distritos" value="{{ aux.idUbigeo }}"> 
                                                 {{ aux.distrito }}
                                              </option>
@@ -198,7 +198,7 @@
                                 <div class="col-lg-4">
                                     <label for="id_act_distrito">Distrito</label>
                                     <select [(ngModel)] = "docente.ubigeo!.idUbigeo" id="id_act_distrito" name="distrito" class="form-control">
-                                        <option value="-1"> [Seleccione] </option>
+                                        <option value="0"> [Seleccione] </option>
                                         <option *ngFor="let aux of distritos"    value="{{ aux.idUbigeo }}">
                                             {{ aux.distrito }}
                                         </option> 
