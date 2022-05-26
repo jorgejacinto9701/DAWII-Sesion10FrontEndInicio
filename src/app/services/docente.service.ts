@@ -12,19 +12,21 @@ const baseUrl = 'http://localhost:8090/rest/crudDocente';
 
 export class DocenteService {
 
-
+  
   constructor(private http:HttpClient) { }
  
-  consulta(filtro:string):Observable<Docente[]>{
-      return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/" +filtro );
+
+  listaDocente(filtro:string):Observable<Docente[]> {
+      return this.http.get<Docente[]>(baseUrl + "/listaDocentePorNombreLike/"+ filtro);
+  }  
+
+  registraDocente(obj: Docente): Observable<any>{
+      return this.http.post(baseUrl+ "/registraDocente", obj);
   }
 
-  registra(aux:Docente):Observable<any>{
-      return this.http.post<any>(baseUrl+"/registraDocente",aux);
+  actualizaDocente(obj: Docente): Observable<any>{
+    return this.http.put(baseUrl + "/actualizaDocente", obj);
   }
 
-  actualiza(aux:Docente):Observable<any>{
-      return this.http.put<any>(baseUrl+"/actualizaDocente",aux);
-  }
 
 }
