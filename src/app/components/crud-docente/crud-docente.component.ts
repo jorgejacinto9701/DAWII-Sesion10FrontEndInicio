@@ -98,11 +98,12 @@ export class CrudDocenteComponent implements OnInit {
 
         this.docenteService.registraDocente(this.docente).subscribe(
               (x) => {
+                this.submitted = false;
                 alert(x.mensaje);
                 this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
                         (x) => this.docentes = x
                 );
-                this.submitted = false;
+               
               } 
         );
 
