@@ -71,18 +71,34 @@
                 </div>
                 
                 <div class="modal-body">
-                    <form class="content"  (ngSubmit)="registra()">
-                        <div class="submit-form">
-                            
+                    <form class="content" (ngSubmit)="registra()" [formGroup]="forms" >
+                        <div class="submit-form"  >
+                             
                                 <div  class="row">
                                     <div class="col-lg-10">
                                         <label for="id_reg_nombre">Nombre</label>
-                                        <input [(ngModel)]="docente.nombre" type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_reg_nombre" />
+                                        <input formControlName="validaNombre" [(ngModel)]="docente.nombre" type="text" placeholder="Ingrese el nombre" class="form-control" name="nombre" id="id_reg_nombre" />
+                                        <div *ngIf="submitted && forms.controls.validaNombre.errors" class="invalid">
+                                            <div *ngIf="forms.controls.validaNombre.errors.required">
+                                                      El nombre es obligatorio
+                                             </div>    
+                                            <div *ngIf="forms.controls.validaNombre.errors.pattern">
+                                                   El nombre es de 3 a 30 caracteres
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                     <div class="col-lg-2">
                                         <label for="id_reg_dni">DNI</label>
-                                        <input  [(ngModel)]="docente.dni" t type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
+                                        <input formControlName="validaDni" [(ngModel)]="docente.dni" t type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
+                                        <div *ngIf="submitted && forms.controls.validaDni.errors" class="invalid">
+                                             <div *ngIf="forms.controls.validaDni.errors.required">
+                                                      El DNI es obligatorio
+                                             </div>  
+                                             <div *ngIf="forms.controls.validaDni.errors.pattern">
+                                                      El DNI es de 8 dígitos
+                                              </div>    
+                                        </div>
                                     </div>
                                 </div>
 
@@ -91,32 +107,47 @@
                                     
                                     <div class="col-lg-4">
                                         <label for="id_reg_departamento">Departamento</label>
-                                        <select [(ngModel)]="docente.ubigeo!.departamento" (change)="cargaProvincia()"   id="id_reg_departamento" name="departamento" class="form-control">
+                                        <select formControlName="validaDepartamento"  [(ngModel)]="docente.ubigeo!.departamento" (change)="cargaProvincia()"   id="id_reg_departamento" name="departamento" class="form-control">
                                             <option value="-1"> [Seleccione] </option>
                                             <option *ngFor="let aux of departamentos" value="{{ aux }}"> 
                                                         {{ aux }}
                                             </option>
                                         </select>
+                                        <div *ngIf="submitted && forms.controls.validaDepartamento.errors" class="invalid">
+                                            <div *ngIf="forms.controls.validaDepartamento.errors.min">
+                                                      El Departamento es obligatorio
+                                             </div>    
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label  for="id_reg_provincia">Provincia</label>
-                                        <select  [(ngModel)]="docente.ubigeo!.provincia" (change)="cargaDistrito()"   id="id_reg_provincia" name="provincia" class="form-control" >
+                                        <select formControlName="validaProvincia"  [(ngModel)]="docente.ubigeo!.provincia" (change)="cargaDistrito()"   id="id_reg_provincia" name="provincia" class="form-control" >
                                             <option value="-1"> [Seleccione] </option>
                                              <option *ngFor="let aux of  provincias" value="{{ aux }}"> 
                                                         {{ aux }}
                                              </option>
                                         </select>
+                                        <div *ngIf="submitted && forms.controls.validaProvincia.errors" class="invalid">
+                                            <div *ngIf="forms.controls.validaProvincia.errors.min">
+                                                      El Provincia es obligatorio
+                                             </div>    
+                                        </div>
                                     </div>
 
                                     <div class="col-lg-4">
                                         <label for="id_reg_distrito">Distrito</label>
-                                        <select [(ngModel)]="docente.ubigeo!.idUbigeo"  id="id_reg_distrito" name="distrito" class="form-control">
+                                        <select formControlName="validaDistrito"   [(ngModel)]="docente.ubigeo!.idUbigeo"  id="id_reg_distrito" name="distrito" class="form-control">
                                             <option value="-1"> [Seleccione] </option>
                                             <option *ngFor="let aux of  distritos" value="{{ aux.idUbigeo }}"> 
                                                 {{ aux.distrito }}
                                              </option>
                                         </select>
+                                        <div *ngIf="submitted && forms.controls.validaDistrito.errors" class="invalid">
+                                            <div *ngIf="forms.controls.validaDistrito.errors.min">
+                                                      El Departamento es obligatorio
+                                             </div>    
+                                        </div>
                                     </div>
                                 
                                 
@@ -128,7 +159,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btn_reg_cerrar" style="width: 100px;">Close</button>
                             <div class="form-group text-center">
                                 <div class="col-lg-12">
-                                    <button id="id_reg_registra"  class="btn btn-success form-control"style="width: 100px;">Registrar</button>
+                                    <button id="id_reg_registra"  class="btn btn-success form-control"style="width: 100px;" [disabled]="forms.invalid">Registrar</button>
                                 </div>
                             </div>
                         </div>

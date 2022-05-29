@@ -3,6 +3,7 @@ import { Docente } from 'src/app/models/docente.model';
 import { Ubigeo } from 'src/app/models/ubigeo.model';
 import { DocenteService } from 'src/app/services/docente.service';
 import { UbigeoService } from 'src/app/services/ubigeo.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-crud-docente',
@@ -35,7 +36,19 @@ export class CrudDocenteComponent implements OnInit {
     }
   };
 
-  constructor(private docenteService:DocenteService, private ubigeoService:UbigeoService) {
+  forms = new FormGroup({
+     validaNombre: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]{3,30}')]),
+     validaDni: new FormControl('', [Validators.required,Validators.pattern('[0-9]{8}')]),
+     validaDepartamento: new FormControl('', [Validators.min(1)]),
+     validaProvincia: new FormControl('', [Validators.min(1)]),
+     validaDistrito: new FormControl('', [Validators.min(1)]),
+   });
+
+    //para verificar que e pulsó el boton
+    submitted = false;
+
+
+  constructor(private docenteService:DocenteService, private ubigeoService:UbigeoService, private formBuilder:FormBuilder) {
       this.ubigeoService.listarDepartamento().subscribe(
           response => this.departamentos = response
       );            
@@ -75,12 +88,21 @@ export class CrudDocenteComponent implements OnInit {
   }
 
   registra(){
+
+        this.submitted = true;
+
+        //finaliza el método si hay un error
+        if (this.forms.invalid){
+          return;
+        }
+
         this.docenteService.registraDocente(this.docente).subscribe(
               (x) => {
                 alert(x.mensaje);
                 this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
                         (x) => this.docentes = x
                 );
+                this.submitted = false;
               } 
         );
 
