@@ -88,7 +88,7 @@
                                     
                                     <div class="col-lg-4">
                                         <label for="id_reg_dni">DNI</label>
-                                        <input formControlName="validaDni" [(ngModel)]="docente.dni" t type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
+                                        <input formControlName="validaDni" [(ngModel)]="docente.dni" type="text" placeholder="Ingrese DNI" class="form-control" name="dni" id="id_reg_dni"  maxlength="8"/>
                                         <div *ngIf="submitted && formsRegistra.controls.validaDni.errors" class="invalid">
                                             <ul>
                                                 <li>El DNI es obligatorio</li>    
