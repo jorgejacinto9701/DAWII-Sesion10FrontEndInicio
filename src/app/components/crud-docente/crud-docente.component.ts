@@ -36,7 +36,7 @@ export class CrudDocenteComponent implements OnInit {
     }
   };
 
-  
+
   //Declaracion de validaciones
   formsRegistra = new FormGroup({
     validaNombre: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]{3,30}')]),
@@ -108,11 +108,11 @@ export class CrudDocenteComponent implements OnInit {
 
         this.docenteService.registraDocente(this.docente).subscribe(
               (x) => {
-                alert(x.mensaje);
                 this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
                         (x) => this.docentes = x
                 );
                 this.submitted = false;
+                alert(x.mensaje);
               } 
         );
 
@@ -160,13 +160,11 @@ export class CrudDocenteComponent implements OnInit {
 
     this.docenteService.actualizaDocente(this.docente).subscribe(
           (x) => {
-            alert(x.mensaje);
             this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
-                    (x) => {
-                          this.docentes = x
-                          this.submitted = false;
-                    }
+                 (x) => this.docentes = x
             );
+            this.submitted = false;
+            alert(x.mensaje);
           } 
     );
 
