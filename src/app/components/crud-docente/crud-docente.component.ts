@@ -36,14 +36,13 @@ export class CrudDocenteComponent implements OnInit {
     }
   };
 
-
   //Declaracion de validaciones
-  formsRegistra = new FormGroup({
-    validaNombre: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]{3,30}')]),
-    validaDni: new FormControl('', [Validators.required,Validators.pattern('[0-9]{8}')]),
-    validaDepartamento: new FormControl('', [Validators.min(1)]),
-    validaProvincia: new FormControl('', [Validators.min(1)]),
-    validaDistrito: new FormControl('', [Validators.min(1)]),
+    formsRegistra = new FormGroup({
+      validaNombre: new FormControl('', [Validators.required, Validators.pattern('[a-zA-Z ]{3,30}')]),
+      validaDni: new FormControl('', [Validators.required,Validators.pattern('[0-9]{8}')]),
+      validaDepartamento: new FormControl('', [Validators.min(1)]),
+      validaProvincia: new FormControl('', [Validators.min(1)]),
+      validaDistrito: new FormControl('', [Validators.min(1)]),
   });
 
   formsActualiza = new FormGroup({
@@ -52,12 +51,11 @@ export class CrudDocenteComponent implements OnInit {
     validaDepartamento: new FormControl('', [Validators.min(1)]),
     validaProvincia: new FormControl('', [Validators.min(1)]),
     validaDistrito: new FormControl('', [Validators.min(1)]),
-    validaEstado: new FormControl('', [Validators.min(1)]),
+    validaEstado: new FormControl('', [Validators.min(0)]),
   });
 
-
-   //para verificar que e pulsó el boton
-   submitted = false;
+  //para verificar que e pulsó el boton
+  submitted = false;
 
   constructor(private docenteService:DocenteService, private ubigeoService:UbigeoService) {
       this.ubigeoService.listarDepartamento().subscribe(
@@ -99,20 +97,21 @@ export class CrudDocenteComponent implements OnInit {
   }
 
   registra(){
-        this.submitted = true;
+       this.submitted = true;
 
         //finaliza el método si hay un error
         if (this.formsRegistra.invalid){
-          return;
+         return;
         }
+        
+        this.submitted = false;
 
         this.docenteService.registraDocente(this.docente).subscribe(
               (x) => {
+                alert(x.mensaje);
                 this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
                         (x) => this.docentes = x
                 );
-                this.submitted = false;
-                alert(x.mensaje);
               } 
         );
 
@@ -155,16 +154,17 @@ export class CrudDocenteComponent implements OnInit {
 
     //finaliza el método si hay un error
     if (this.formsActualiza.invalid){
-      return;
+     return;
     }
+
+    this.submitted = false;
 
     this.docenteService.actualizaDocente(this.docente).subscribe(
           (x) => {
-            this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
-                 (x) => this.docentes = x
-            );
-            this.submitted = false;
             alert(x.mensaje);
+            this.docenteService.listaDocente(this.filtro==""?"todos":this.filtro).subscribe(
+                    (x) => this.docentes = x
+            );
           } 
     );
 
